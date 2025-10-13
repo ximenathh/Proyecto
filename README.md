@@ -1,5 +1,6 @@
 ﻿# Proyecto
-# Este él proyecto final de la materia de Computación Grafica.
+ Este él proyecto final de la materia de Computación Grafica.
+
 
 
 
