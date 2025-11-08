@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ximen\\source\\repos\\Proyecto\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{ED90A83C-0522-4F48-A1FB-746FE5CF361F}|Proyecto\\Proyecto.vcxproj|C:\\Users\\ximen\\source\\repos\\Proyecto\\Proyecto\\20261.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{ED90A83C-0522-4F48-A1FB-746FE5CF361F}|Proyecto\\Proyecto.vcxproj|solutionrelative:Proyecto\\20261.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ximen\\source\\repos\\Proyecto\\Proyecto\\include\\modelAnim.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Proyecto\\include\\modelAnim.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20261.cpp",
+              "DocumentMoniker": "C:\\Users\\ximen\\source\\repos\\Proyecto\\Proyecto\\20261.cpp",
+              "RelativeDocumentMoniker": "Proyecto\\20261.cpp",
+              "ToolTip": "C:\\Users\\ximen\\source\\repos\\Proyecto\\Proyecto\\20261.cpp",
+              "RelativeToolTip": "Proyecto\\20261.cpp",
+              "ViewState": "AgIAAAkCAAAAAAAAAAAAABICAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-08T00:54:21.252Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "modelAnim.h",
+              "DocumentMoniker": "C:\\Users\\ximen\\source\\repos\\Proyecto\\Proyecto\\include\\modelAnim.h",
+              "RelativeDocumentMoniker": "Proyecto\\include\\modelAnim.h",
+              "ToolTip": "C:\\Users\\ximen\\source\\repos\\Proyecto\\Proyecto\\include\\modelAnim.h",
+              "RelativeToolTip": "Proyecto\\include\\modelAnim.h",
+              "ViewState": "AgIAAL0BAAAAAAAAAAAAAN0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-10-29T02:55:20.47Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

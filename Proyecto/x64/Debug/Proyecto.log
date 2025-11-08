@@ -1,0 +1,24 @@
+﻿  20261.cpp
+C:\Users\ximen\source\repos\Proyecto\Proyecto\include\meshAnim.h(116,50): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
+  (compilando archivo de origen "20261.cpp")
+  
+C:\Users\ximen\source\repos\Proyecto\Proyecto\include\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+  (compilando archivo de origen "20261.cpp")
+  
+C:\Users\ximen\source\repos\Proyecto\Proyecto\include\modelAnim.h(520,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  (compilando archivo de origen "20261.cpp")
+  
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(284,27): warning C4244: '=': conversión de 'Uint64' a 'double'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(352,46): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(357,46): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(379,32): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(467,39): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(661,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(662,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(669,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(670,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(672,39): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(672,30): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(677,28): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+  Proyecto.vcxproj -> C:\Users\ximen\source\repos\Proyecto\x64\Debug\Proyecto.exe
