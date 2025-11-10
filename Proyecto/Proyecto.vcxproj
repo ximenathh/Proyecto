@@ -108,7 +108,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc143-mt.lib;SDL3.lib;opengl32.lib;glew32.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>   assimp-vc143-mt.lib;SDL3.lib;opengl32.lib;glew32.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)
+
+</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,7 +127,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc143-mt.lib;SDL3.lib;opengl32.lib;glew32.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>   assimp-vc143-mt.lib;SDL3.lib;opengl32.lib;glew32.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)
+
+</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

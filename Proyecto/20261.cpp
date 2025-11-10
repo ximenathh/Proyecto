@@ -25,22 +25,22 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-// Settings
+// Ajustes
 unsigned int SCR_WIDTH = 800;
 unsigned int SCR_HEIGHT = 600;
 GLFWmonitor* monitors;
 
-// Camera
-Camera camera(glm::vec3(0.0f, 10.0f, 3.0f));
+// Camara
+Camera camera(glm::vec3(0.0f, 10.0f, 50.0f));
 float MovementSpeed = 0.1f;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 glm::vec3 posicionCofre(-15.3f, 3.0f, 4.0f);
-glm::vec3 posicionPoseidon(-11.3f, 3.0f, 5.0f);
+glm::vec3 posicionEsfera(2.0f , 3.0f, 5.0f);
 glm::vec3 posicionGeneral(0.0f, 5.0f, 55.0f);
 
-// Timing
+// Tiempo
 const int FPS = 60;
 const int LOOP_TIME = 1000 / FPS;
 double deltaTime = 0.0f;
@@ -73,16 +73,49 @@ float rotacionCuerpo = 0.0f;
 
 //=======AVE ANIMACION========
 float tiempoVueloAve = 0.0f;
-float velocidadVueloAve = 0.9f;  // Velocidad del recorrido circular
-float radioVuelo = 14.0f;        // Radio del círculo
-float alturaVuelo = 10.0f;       // Altura del vuelo
-glm::vec3 centroVuelo(0.0f, 0.0f, 0.0f);  // Centro cerca de la estructura
+float velocidadVueloAve = 0.9f;  
+float radioVuelo = 14.0f;        
+float alturaVuelo = 10.0f;       
+glm::vec3 centroVuelo(0.0f, 0.0f, 0.0f); 
 
 // Variables para aleteo
 float anguloAleteo = 0.0f;
-float velocidadAleteo = 40.0f;   // Velocidad del aleteo
-float amplitudAleteo = 4.0f;    // Amplitud del movimiento de las alas
+float velocidadAleteo = 40.0f;  
+float amplitudAleteo = 4.0f;    
 //=======AVE ANIMACION FIN========= 
+//=======ESFERA Y AROS ANIMACION========
+float tiempoEsfera = 0.0f;
+float rotacionEsfera = 0.0f;
+float pulsacionEsfera = 1.0f;
+// Rotaciones independientes para cada aro
+float rotacionAro1 = 0.0f;
+float rotacionAro2 = 0.0f;
+float rotacionAro3 = 0.0f;
+float rotacionAro4 = 0.0f;
+float rotacionAro5 = 0.0f;
+// Velocidades de rotación 
+float velocidadEsfera = 30.0f;
+float velocidadAro1 = 45.0f;
+float velocidadAro2 = 60.0f;
+float velocidadAro3 = 75.0f;
+float velocidadAro4 = 90.0f;
+float velocidadAro5 = 105.0f;
+// Pulsación
+float velocidadPulsacion = 2.0f;
+float amplitudPulsacion = 0.15f;
+//=======ESFERA Y AROS ANIMACION FIN========
+// ========== AUDIO ==========
+//1
+SDL_AudioStream* primerStream = nullptr;  
+Uint8* primerBuffer = nullptr;            
+Uint32 primerLength = 0;                  
+bool audioInicializado = false;
+SDL_AudioDeviceID audioDeviceID = 0;
+// 2
+SDL_AudioStream* segundoStream = nullptr;
+Uint8* segundoBuffer = nullptr;
+Uint32 segundoLength = 0;
+
 
 // Lighting
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
@@ -94,6 +127,32 @@ glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 // Floor
 GLuint VAO_floor, VBO_floor, EBO_floor;
 unsigned int floorTexture;
+void reproducirPrimerAudio() {
+	if (primerStream && primerBuffer && audioDeviceID > 0) {
+		SDL_ClearAudioStream(primerStream);
+
+		SDL_BindAudioStream(audioDeviceID, primerStream);
+
+		SDL_PutAudioStreamData(primerStream, primerBuffer, primerLength);
+		SDL_ResumeAudioDevice(audioDeviceID);
+
+		std::cout << " Reproduciendo primer audio (saludo)" << std::endl;
+	}
+}
+
+void reproducirSegundoAudio() {
+	if (segundoStream && segundoBuffer && audioDeviceID > 0) {
+		SDL_ClearAudioStream(segundoStream);
+
+		SDL_BindAudioStream(audioDeviceID, segundoStream);
+
+		SDL_PutAudioStreamData(segundoStream, segundoBuffer, segundoLength);
+
+		SDL_ResumeAudioDevice(audioDeviceID);
+
+		std::cout << "Reproduciendo segundo audio (pajaros)" << std::endl;
+	}
+}
 
 void setupFloor() {
 	float verticesPiso[] = {
@@ -165,6 +224,92 @@ unsigned int generateTextures(const char* filename, bool alfa) {
 int main() {
 	// GLFW: initialize and configure
 	glfwInit();
+	// ========================================
+	// AUDIO
+	// ========================================
+	SDL_SetHint(SDL_HINT_AUDIO_DEVICE_APP_NAME, "Proyecto OpenGL");
+
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
+		std::cerr << "Error al inicializar SDL Audio: " << SDL_GetError() << std::endl;
+	}
+	else {
+		audioInicializado = true;
+		std::cout << "=== DEBUG AUDIO ===" << std::endl;
+
+		// Cargar 1 audio
+		SDL_AudioSpec wavSpec;
+		int resultado = SDL_LoadWAV("audio/saludo.wav", &wavSpec, &primerBuffer, &primerLength);
+
+		if (resultado == 0) {
+			std::cout << "Primer audio cargado correctamente" << std::endl;
+			std::cout << "  Frecuencia: " << wavSpec.freq << " Hz" << std::endl;
+			std::cout << "  Formato: " << SDL_AUDIO_BITSIZE(wavSpec.format) << " bits" << std::endl;
+			std::cout << "  Canales: " << (int)wavSpec.channels << std::endl;
+			std::cout << "  Tamaño: " << primerLength << " bytes" << std::endl;
+
+			// Abrir dispositivo por defecto
+			std::cout << "Intentando abrir dispositivo por defecto..." << std::endl;
+			audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_OUTPUT, &wavSpec);
+
+			if (audioDeviceID > 0) {
+				std::cout << "Dispositivo abierto (ID: " << audioDeviceID << ")" << std::endl;
+
+				// Obtener formato del dispositivo
+				SDL_AudioSpec deviceSpec;
+				int sampleFrames = 0;
+
+				if (SDL_GetAudioDeviceFormat(audioDeviceID, &deviceSpec, &sampleFrames) == 0) {
+					std::cout << "Formato del dispositivo:" << std::endl;
+					std::cout << "  Frecuencia: " << deviceSpec.freq << " Hz" << std::endl;
+					std::cout << "  Canales: " << deviceSpec.channels << std::endl;
+				}
+
+				SDL_AudioSpec outputSpec;
+				outputSpec.freq = deviceSpec.freq;
+				outputSpec.format = SDL_AUDIO_F32;
+				outputSpec.channels = deviceSpec.channels;
+
+				primerStream = SDL_CreateAudioStream(&wavSpec, &outputSpec);
+
+				if (primerStream) {
+					std::cout << "✓ Stream del primer audio creado" << std::endl;
+				}
+			}
+			else {
+				std::cerr << "Error abriendo dispositivo: " << SDL_GetError() << std::endl;
+			}
+		}
+		else {
+			std::cerr << "Error cargando primer WAV: " << SDL_GetError() << std::endl;
+		}
+		
+	}
+	//2
+	if (audioInicializado && audioDeviceID > 0) {
+		SDL_AudioSpec segundoWavSpec;
+
+		int resultado2 = SDL_LoadWAV("audio/pajaro.wav", &segundoWavSpec, &segundoBuffer, &segundoLength);
+
+		if (resultado2 == 0) {
+			std::cout << "✓ Segundo audio cargado" << std::endl;
+			std::cout << "  Tamaño: " << segundoLength << " bytes" << std::endl;
+
+			SDL_AudioSpec outputSpec;
+			SDL_GetAudioDeviceFormat(audioDeviceID, &outputSpec, nullptr);
+
+			segundoStream = SDL_CreateAudioStream(&segundoWavSpec, &outputSpec);
+
+			if (segundoStream) {
+				std::cout << "✓ Stream del segundo audio creado" << std::endl;
+			}
+		}
+		else {
+			std::cerr << "✗ Error cargando segundo audio: " << SDL_GetError() << std::endl;
+		}
+	}
+	// ========================================
+	// FIN DE INICIALIZACIÓN DE AUDIO
+	// ========================================
 
 	// GLFW window creation
 	monitors = glfwGetPrimaryMonitor();
@@ -238,10 +383,23 @@ int main() {
 	Model cuerpoAve("resources/objects/exterior/cuerpoAve.obj");
 	Model alaDer("resources/objects/exterior/alaDer.obj");
 	Model alaIzq("resources/objects/exterior/alaIzq.obj");
-	//silla
+	//sala1
 	Model silla("resources/objects/exterior/silla.obj");
+	Model separador("resources/objects/sala1/separador.obj");
+	Model banca("resources/objects/sala1/banca.obj");
+	Model penelope("resources/objects/sala1/penelope.obj");
+	Model jarron("resources/objects/sala1/jarron.obj");
+
+	//exterior
 	Model fuente("resources/objects/exterior/fuente.obj");
 	Model erodaCartel("resources/objects/exterior/ERODA.obj");
+	//centro
+	Model esfera("resources/objects/centro/esfera.obj");
+	Model aro1("resources/objects/centro/aro1.obj");
+	Model aro2("resources/objects/centro/aro2.obj");
+	Model aro3("resources/objects/centro/aro3.obj");
+	Model aro4("resources/objects/centro/aro4.obj");
+	Model aro5("resources/objects/centro/aro5.obj");
 
 	ModelAnim leo("resources/objects/guardia/guardia.dae");
 	leo.initShaders(animShader.ID);
@@ -346,7 +504,120 @@ int main() {
 		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", modelOp);
 		sala1.Draw(staticShader);
-
+		//sala1 penelope
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-10.4f, -0.7f, -5.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.1f));
+		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		penelope.Draw(staticShader);
+		//sala1 jarron
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-10.4f, -0.85f, -9.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.1f));
+		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		jarron.Draw(staticShader);
+		// ========== SEPARADOR ==========
+		//1
+		staticShader.use();  
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-18.5f, -0.7f, 0.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.09f));
+		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		separador.Draw(staticShader);
+		//2
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-18.5f, -0.7f, -2.7f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.09f));
+		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		separador.Draw(staticShader);
+		//3
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-18.65f, -0.7f, 0.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.09f));
+		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		separador.Draw(staticShader);
+		//4
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-14.9f, -0.7f, 0.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.09f));
+		modelOp = glm::rotate(modelOp, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		separador.Draw(staticShader);
+		// ========== SEPARADOR FIN ==========
+		//============BANCA===================
+		// 1
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-17.0f, -0.7f, -5.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.3f));
+		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		banca.Draw(staticShader);
+		// 2
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-17.0f, -0.7f, 3.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.3f));
+		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		banca.Draw(staticShader);
+		// ==========BANCA FIN ===============
+		//==========CENTRO ===============
+		tiempoEsfera += deltaTime / 1000.0f;
+		// Actualizar rotaciones
+		rotacionEsfera += velocidadEsfera * (deltaTime / 1000.0f);
+		rotacionAro1 += velocidadAro1 * (deltaTime / 1000.0f);
+		rotacionAro2 += velocidadAro2 * (deltaTime / 1000.0f);
+		rotacionAro3 += velocidadAro3 * (deltaTime / 1000.0f);
+		rotacionAro4 += velocidadAro4 * (deltaTime / 1000.0f);
+		rotacionAro5 += velocidadAro5 * (deltaTime / 1000.0f);
+		// Calcular pulsación
+		pulsacionEsfera = 1.0f + sin(tiempoEsfera * velocidadPulsacion) * amplitudPulsacion;
+		// Posición base del centro
+		glm::vec3 centroPos(0.0f, 2.0f, 0.0f);
+		// ===== ESFERA CENTRAL =====
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), centroPos);
+		modelOp = glm::scale(modelOp, glm::vec3(0.04f * pulsacionEsfera)); // Pulsación
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionEsfera), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotación Y
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionEsfera * 0.5f), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotación X
+		staticShader.setMat4("model", modelOp);
+		esfera.Draw(staticShader);
+		// ===== ARO 1 - Rotación en eje X =====
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), centroPos);
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionAro1), glm::vec3(1.0f, 0.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.04f));
+		staticShader.setMat4("model", modelOp);
+		aro1.Draw(staticShader);
+		// ===== ARO 2 - Rotación en eje Y =====
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), centroPos);
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionAro2), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.04f));
+		staticShader.setMat4("model", modelOp);
+		aro2.Draw(staticShader);
+		// ===== ARO 3 - Rotación en eje Z =====
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), centroPos);
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionAro3), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.04f));
+		staticShader.setMat4("model", modelOp);
+		aro3.Draw(staticShader);
+		// ===== ARO 4 - Rotación diagonal (X+Y) =====
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), centroPos);
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionAro4), glm::vec3(1.0f, 1.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.04f));
+		staticShader.setMat4("model", modelOp);
+		aro4.Draw(staticShader);
+		// ===== ARO 5 - Rotación diagonal (Y+Z) =====
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), centroPos);
+		modelOp = glm::rotate(modelOp, glm::radians(rotacionAro5), glm::vec3(0.0f, 1.0f, 1.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.04f));
+		staticShader.setMat4("model", modelOp);
+		aro5.Draw(staticShader);
+		//==========CENTRO FIN ===============
 		// ========== COFRE ==========
 		if (cofreAbierto && anguloTapaCofre < anguloMaximoCofre) {
 			anguloTapaCofre += velocidadAperturaCofre * (deltaTime / 1000.0f);
@@ -463,10 +734,8 @@ int main() {
 		// ========== POSEIDON FIN==========
 
 		// ========== AVE CON ANIMACIÓN DE VUELO CIRCULAR ==========
-		// Actualizar tiempo para el vuelo y aleteo
 		tiempoVueloAve += velocidadVueloAve * (deltaTime / 1000.0f);
 
-		// Calcular posición en círculo
 		float anguloVuelo = tiempoVueloAve;
 		float x = centroVuelo.x + cos(anguloVuelo) * radioVuelo;
 		float z = centroVuelo.z + sin(anguloVuelo) * radioVuelo;
@@ -474,24 +743,19 @@ int main() {
 
 		glm::vec3 posicionAve = glm::vec3(x, y, z);
 
-		// Calcular dirección de vuelo para que mire hacia donde va
 		float anguloRotacion = atan2(sin(anguloVuelo), cos(anguloVuelo));
-		anguloRotacion = glm::degrees(anguloRotacion) + 90.0f; // +90 para ajustar orientación
-
+		anguloRotacion = glm::degrees(anguloRotacion) + 90.0f; 
 		// Aleteo de las alas
 		float tiempoAleteo = tiempoVueloAve * velocidadAleteo;
 		anguloAleteo = sin(tiempoAleteo) * amplitudAleteo;
 
-		// Pivotes de las alas escalados (multiplicados por 0.1)
 		glm::vec3 pivotAlaDer = glm::vec3(-6.6903f * 0.15f, 0.391823f * 0.15f, 11.9203f * 0.15f);
 		glm::vec3 pivotAlaIzq = glm::vec3(-6.60685f * 0.15f, 0.197859f * 0.15f, 10.157f * 0.15f);
 
-		// Transformación base del ave (con rotación hacia dirección de vuelo)
 		glm::mat4 avePosicion = glm::mat4(1.0f);
 		avePosicion = glm::translate(avePosicion, posicionAve);
 		avePosicion = glm::rotate(avePosicion, glm::radians(anguloRotacion), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		// Cuerpo del ave
 		glm::mat4 cuerpoAveBase = avePosicion;
 		cuerpoAveBase = glm::scale(cuerpoAveBase, glm::vec3(0.15f));
 
@@ -499,24 +763,20 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		cuerpoAve.Draw(staticShader);
 
-		// Ala izquierda
 		glm::mat4 alaIzqMat = avePosicion;
 		alaIzqMat = glm::scale(alaIzqMat, glm::vec3(0.15f));
 		alaIzqMat = glm::translate(alaIzqMat, pivotAlaIzq);
 		alaIzqMat = glm::rotate(alaIzqMat, glm::radians(anguloAleteo), glm::vec3(1.0f, 0.0f, 0.0f));
 		alaIzqMat = glm::translate(alaIzqMat, -pivotAlaIzq);
-
 		modelOp = alaIzqMat;
 		staticShader.setMat4("model", modelOp);
 		alaIzq.Draw(staticShader);
 
-		// Ala derecha
 		glm::mat4 alaDerMat = avePosicion;
 		alaDerMat = glm::scale(alaDerMat, glm::vec3(0.15f));
 		alaDerMat = glm::translate(alaDerMat, pivotAlaDer);
 		alaDerMat = glm::rotate(alaDerMat, glm::radians(-anguloAleteo), glm::vec3(1.0f, 0.0f, 0.0f));
 		alaDerMat = glm::translate(alaDerMat, -pivotAlaDer);
-
 		modelOp = alaDerMat;
 		staticShader.setMat4("model", modelOp);
 		alaDer.Draw(staticShader);
@@ -534,7 +794,6 @@ int main() {
 
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-25.0f, -0.5f, 3.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.7f));
-		//modelOp = glm::rotate(modelOp, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", modelOp);
 		erodaCartel.Draw(staticShader);
 		// ========== EXTRAS FIN==========
@@ -543,20 +802,16 @@ int main() {
 		animShader.setMat4("projection", projectionOp);
 		animShader.setMat4("view", viewOp);
 
-		// Configurar luces según la estructura del shader anim.fs
 		animShader.setVec3("viewPos", camera.Position);
 
-		// Light (luz direccional simple)
 		animShader.setVec3("light.direction", glm::vec3(0.2f, -0.8f, -0.5f));
 		animShader.setVec3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 		animShader.setVec3("light.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
 		animShader.setVec3("light.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 
-		// Material
 		animShader.setVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 		animShader.setFloat("material.shininess", 32.0f);
 
-		// Configurar textura
 		animShader.setInt("texture_diffuse1", 0);
 
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -0.8f, 15.0f));
@@ -565,7 +820,6 @@ int main() {
 
 		leo.Draw(animShader);
 
-		// Draw Floor
 		primitiveShader.use();
 		primitiveShader.setMat4("projection", projectionOp);
 		primitiveShader.setMat4("view", viewOp);
@@ -579,27 +833,52 @@ int main() {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
-		// Draw skybox as last
 		skyboxShader.use();
 		skybox.Draw(skyboxShader, viewOp, projectionOp, camera);
 
-		// Limitar framerate a 60 FPS
 		deltaTime = SDL_GetTicks() - lastFrame;
 		if (deltaTime < LOOP_TIME) {
 			SDL_Delay((int)(LOOP_TIME - deltaTime));
 		}
 
-		// GLFW: swap buffers and poll IO events
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+	//Audio 1 Saludo
+	if (primerStream) {
+		SDL_DestroyAudioStream(primerStream);
+		primerStream = nullptr;
+	}
 
-	// GLFW: terminate
+	// Audio 2 Pajaros
+	if (segundoStream) {
+		SDL_DestroyAudioStream(segundoStream);
+		segundoStream = nullptr;
+	}
+
+	if (audioDeviceID > 0) {
+		SDL_CloseAudioDevice(audioDeviceID);
+		audioDeviceID = 0;
+	}
+
+	if (primerBuffer) {
+		SDL_free(primerBuffer);
+		primerBuffer = nullptr;
+	}
+
+	if (segundoBuffer) {
+		SDL_free(segundoBuffer);
+		segundoBuffer = nullptr;
+	}
+
+	if (audioInicializado) {
+		SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	}
+
 	glfwTerminate();
 	return 0;
 }
 
-// Process input
 void my_input(GLFWwindow* window, int key, int scancode, int action, int mode) {
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -624,7 +903,7 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode) {
 		tiempoAnimacion = 0.0f;
 	}
 
-	// ========== CÁMARAS PREDEFINIDAS ==========
+	// ========== CÁMARAS POSICIONES ==========
 	// Tecla 1: Ir al cofre
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
 		camera.Position = posicionCofre;
@@ -633,9 +912,9 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode) {
 		camera.updateCameraVectors();
 	}
 
-	// Tecla 2: Ir a Poseidón
+	// Tecla 2: Ir a Esfera
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-		camera.Position = posicionPoseidon;
+		camera.Position = posicionEsfera;
 		camera.Yaw = -120.0f;
 		camera.Pitch = -10.0f;
 		camera.updateCameraVectors();
@@ -648,14 +927,22 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode) {
 		camera.Pitch = 10.0f;
 		camera.updateCameraVectors();
 	}
+	// Tecla R: Reproducir SALUDO
+	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+		reproducirPrimerAudio();
+	}
+
+	// Tecla T: Reproducir PAJAROS
+	if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+		reproducirSegundoAudio();
+	}
+
 }
 
-// GLFW: whenever the window size changed
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-// GLFW: whenever the mouse moves
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	if (firstMouse) {
 		lastX = xpos;
@@ -672,7 +959,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
-// GLFW: whenever the mouse scroll wheel scrolls
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 	camera.ProcessMouseScroll(yoffset);
 }
