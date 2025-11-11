@@ -404,6 +404,32 @@ int main() {
 	ModelAnim leo("resources/objects/guardia/guardia.dae");
 	leo.initShaders(animShader.ID);
 
+
+	//Sala 2 kike
+	Model Sala2("resources/objects/Sala2/Sala2k.obj");
+	//Alien
+	Model Alien("resources/objects/Sala2/Alien.obj");
+	Model CaderaB("resources/objects/Sala2/CaderaBack.obj");
+	Model CaderaF("resources/objects/Sala2/CaderaFront.obj");
+	Model Pie1A("resources/objects/Sala2/Pie1A.obj");
+	Model Pie1A2("resources/objects/Sala2/Pie1A2.obj");
+	Model Pie1B("resources/objects/Sala2/Pie1B.obj");
+	Model Pie1C("resources/objects/Sala2/Pie1C.obj");
+	Model Pie1D("resources/objects/Sala2/Pie1D.obj");
+	Model Pie2A("resources/objects/Sala2/Pie2A.obj");
+	Model Pie2A2("resources/objects/Sala2/Pie2A2.obj");
+	Model Pie2B("resources/objects/Sala2/Pie2B.obj");
+	Model Pie2B2("resources/objects/Sala2/Pie2B2.obj");
+	Model Pie2C("resources/objects/Sala2/Pie2C.obj");
+	Model Pie2D("resources/objects/Sala2/Pie2D.obj");
+	//
+	Model Bird("resources/objects/Sala2/Bird.obj");
+	Model Bull("resources/objects/Sala2/Bull.obj");
+	Model Estatua("resources/objects/Sala2/Estatua.obj");
+	Model Thinker("resources/objects/Sala2/Thinker.obj");
+
+
+
 	// Debug: Ver qué texturas se cargaron
 	std::cout << "=== DEBUG MODELO ===" << std::endl;
 	std::cout << "Modelo cargado. Meshes: " << eroda.meshes.size() << std::endl;
@@ -435,6 +461,8 @@ int main() {
 	glm::mat4 modelOp = glm::mat4(1.0f);
 	glm::mat4 viewOp = glm::mat4(1.0f);
 	glm::mat4 projectionOp = glm::mat4(1.0f);
+
+	
 
 	// Render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -485,6 +513,8 @@ int main() {
 		viewOp = camera.GetViewMatrix();
 		staticShader.setMat4("projection", projectionOp);
 		staticShader.setMat4("view", viewOp);
+
+
 
 		// ========================================
 		// DIBUJAR MODELOS
@@ -780,8 +810,8 @@ int main() {
 		modelOp = alaDerMat;
 		staticShader.setMat4("model", modelOp);
 		alaDer.Draw(staticShader);
-		// ========== AVE FIN==========
-		// ========== EXTRAS==========
+		//// ========== AVE FIN==========
+		//// ========== EXTRAS==========
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.2f, 15.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.2f));
 		staticShader.setMat4("model", modelOp);
@@ -820,6 +850,55 @@ int main() {
 
 		leo.Draw(animShader);
 
+		////sala2
+		staticShader.use();
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(13.1f, -1.0f, -6.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(1.2f));
+		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", modelOp);
+		Sala2.Draw(staticShader);
+
+		/*bool mostrarSala2 = true;
+
+		if (mostrarSala2) {
+			staticShader.use();
+			modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(11.8f, -1.0f, -5.0f));
+			modelOp = glm::scale(modelOp, glm::vec3(1.1f));
+			modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			staticShader.setMat4("model", modelOp);
+			Sala2.Draw(staticShader);
+		}*/
+
+
+
+		//Bull
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-4.5f, -1.25f, -35.0f));
+		//modelOp = glm::scale(modelOp, glm::vec3(0.2f));
+		staticShader.setMat4("model", modelOp);
+		Bull.Draw(staticShader);
+
+		//Bird
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, -1.27f, -49.0f));
+		//modelOp = glm::scale(modelOp, glm::vec3(0.2f));
+		staticShader.setMat4("model", modelOp);
+		Bird.Draw(staticShader);
+
+		//Estatua
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-8.2f, -1.27f, -36.5f));
+		modelOp = glm::scale(modelOp, glm::vec3(1.2f));
+		staticShader.setMat4("model", modelOp);
+		Estatua.Draw(staticShader);
+
+		//Thinker
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, -1.5f, -36.5f));
+		//modelOp = glm::scale(modelOp, glm::vec3(0.2f));
+		staticShader.setMat4("model", modelOp);
+		Thinker.Draw(staticShader);
+
+		//Alien
+
+
+
 		primitiveShader.use();
 		primitiveShader.setMat4("projection", projectionOp);
 		primitiveShader.setMat4("view", viewOp);
@@ -827,6 +906,9 @@ int main() {
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 		primitiveShader.setMat4("model", modelOp);
 		primitiveShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
+
+		//
+		
 
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
 		glBindVertexArray(VAO_floor);
