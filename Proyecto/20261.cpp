@@ -353,6 +353,8 @@ int main() {
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
 	Shader shaderFuente("shaders/fuente.vs", "shaders/fuente.fs");
 	Shader shaderCorazon("shaders/heart.vs", "shaders/heart.fs");
+	Shader alienShader("shaders/alien.vs", "shaders/alien.fs");
+
 
 	// Skybox
 	vector<std::string> faces{
@@ -412,20 +414,7 @@ int main() {
 	//Sala 2 kike
 	Model Sala2("resources/objects/Sala2/Sala2k.obj");
 	//Alien
-	Model Alien("resources/objects/Sala2/Alien.obj");
-	Model CaderaB("resources/objects/Sala2/CaderaBack.obj");
-	Model CaderaF("resources/objects/Sala2/CaderaFront.obj");
-	Model Pie1A("resources/objects/Sala2/Pie1A.obj");
-	Model Pie1A2("resources/objects/Sala2/Pie1A2.obj");
-	Model Pie1B("resources/objects/Sala2/Pie1B.obj");
-	Model Pie1C("resources/objects/Sala2/Pie1C.obj");
-	Model Pie1D("resources/objects/Sala2/Pie1D.obj");
-	Model Pie2A("resources/objects/Sala2/Pie2A.obj");
-	Model Pie2A2("resources/objects/Sala2/Pie2A2.obj");
-	Model Pie2B("resources/objects/Sala2/Pie2B.obj");
-	Model Pie2B2("resources/objects/Sala2/Pie2B2.obj");
-	Model Pie2C("resources/objects/Sala2/Pie2C.obj");
-	Model Pie2D("resources/objects/Sala2/Pie2D.obj");
+	Model Alien("resources/objects/Sala2/Alien3.obj");
 	//
 	Model Bird("resources/objects/Sala2/Bird.obj");
 	Model Bull("resources/objects/Sala2/Bull.obj");
@@ -1016,8 +1005,33 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Thinker.Draw(staticShader);
 
-		//Alien
+		////Alien
+		//modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-6.5f, -1.0f, -3.5f));
+		//staticShader.setMat4("model", modelOp);
+		//Alien.Draw(staticShader);
 
+		alienShader.use();
+		alienShader.setMat4("projection", projectionOp);
+		alienShader.setMat4("view", viewOp);
+
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -1.0f, -31.0f));
+		alienShader.setMat4("model", modelOp);
+
+		// Uniforms del shader
+		alienShader.setVec3("lightColor", glm::vec3(1.0f));
+		alienShader.setVec3("lightPos", glm::vec3(0.0f, 20.0f, -70.0f));
+		alienShader.setVec3("viewPos", camera.Position);
+
+		// Pasar tiempo y textura de ruido
+		tiempoActual = (float)SDL_GetTicks() / 1000.0f;
+		alienShader.setFloat("u_time", tiempoActual);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texturaRuido); // usa la misma textura que la fuente
+		alienShader.setInt("u_noiseTexture", 1);
+
+		// Dibuja el modelo Alien3
+		Alien.Draw(alienShader);
 
 
 		primitiveShader.use();
