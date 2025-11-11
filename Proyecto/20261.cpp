@@ -37,7 +37,7 @@ GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 glm::vec3 posicionCofre(-15.3f, 3.0f, 4.0f);
-glm::vec3 posicionEsfera(2.0f , 3.0f, 5.0f);
+glm::vec3 posicionEsfera(2.0f, 3.0f, 5.0f);
 glm::vec3 posicionGeneral(0.0f, 5.0f, 55.0f);
 
 // Tiempo
@@ -73,15 +73,15 @@ float rotacionCuerpo = 0.0f;
 
 //=======AVE ANIMACION========
 float tiempoVueloAve = 0.0f;
-float velocidadVueloAve = 0.9f;  
-float radioVuelo = 14.0f;        
-float alturaVuelo = 10.0f;       
-glm::vec3 centroVuelo(0.0f, 0.0f, 0.0f); 
+float velocidadVueloAve = 0.9f;
+float radioVuelo = 14.0f;
+float alturaVuelo = 10.0f;
+glm::vec3 centroVuelo(0.0f, 0.0f, 0.0f);
 
 // Variables para aleteo
 float anguloAleteo = 0.0f;
-float velocidadAleteo = 40.0f;  
-float amplitudAleteo = 4.0f;    
+float velocidadAleteo = 40.0f;
+float amplitudAleteo = 4.0f;
 //=======AVE ANIMACION FIN========= 
 //=======ESFERA Y AROS ANIMACION========
 float tiempoEsfera = 0.0f;
@@ -106,9 +106,9 @@ float amplitudPulsacion = 0.15f;
 //=======ESFERA Y AROS ANIMACION FIN========
 // ========== AUDIO ==========
 //1
-SDL_AudioStream* primerStream = nullptr;  
-Uint8* primerBuffer = nullptr;            
-Uint32 primerLength = 0;                  
+SDL_AudioStream* primerStream = nullptr;
+Uint8* primerBuffer = nullptr;
+Uint32 primerLength = 0;
 bool audioInicializado = false;
 SDL_AudioDeviceID audioDeviceID = 0;
 // 2
@@ -127,6 +127,7 @@ glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 // Floor
 GLuint VAO_floor, VBO_floor, EBO_floor;
 unsigned int floorTexture;
+unsigned int texturaRuido;
 void reproducirPrimerAudio() {
 	if (primerStream && primerBuffer && audioDeviceID > 0) {
 		SDL_ClearAudioStream(primerStream);
@@ -282,7 +283,7 @@ int main() {
 		else {
 			std::cerr << "Error cargando primer WAV: " << SDL_GetError() << std::endl;
 		}
-		
+
 	}
 	//2
 	if (audioInicializado && audioDeviceID > 0) {
@@ -343,12 +344,15 @@ int main() {
 	// Setup floor
 	setupFloor();
 	floorTexture = generateTextures("Texturas/adoquin.jpg", false);
+	texturaRuido = generateTextures("Texturas/textura_nubes.jpg", false);
 
 	// Build and compile shaders
 	Shader primitiveShader("shaders/shader_texture_color.vs", "shaders/shader_texture_color.fs");
 	Shader staticShader("Shaders/shader_Lights.vs", "Shaders/shader_Lights_mod.fs");
 	Shader skyboxShader("Shaders/skybox.vs", "Shaders/skybox.fs");
 	Shader animShader("Shaders/anim.vs", "Shaders/anim.fs");
+	Shader shaderFuente("shaders/fuente.vs", "shaders/fuente.fs");
+	Shader shaderCorazon("shaders/heart.vs", "shaders/heart.fs");
 
 	// Skybox
 	vector<std::string> faces{
@@ -462,7 +466,7 @@ int main() {
 	glm::mat4 viewOp = glm::mat4(1.0f);
 	glm::mat4 projectionOp = glm::mat4(1.0f);
 
-	
+
 
 	// Render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -496,11 +500,15 @@ int main() {
 		staticShader.setFloat("pointLight[0].linear", 0.007f);
 		staticShader.setFloat("pointLight[0].quadratic", 0.0002f);
 
-		// Luz puntual 1 (desactivada)
-		staticShader.setVec3("pointLight[1].position", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		// Luz puntual 1 (¡ACTIVADA! - Luz del Holograma)
+		glm::vec3 posBaseHolograma = glm::vec3(26.3213f, 3.00009f, -2.54276f); // Coordenadas Sala 3
+		float alturaOscilacionHolo = sin((float)SDL_GetTicks() / 1000.0f * 2.0f) * 0.5f;
+		glm::vec3 posLuzHolo = posBaseHolograma + glm::vec3(0.0f, alturaOscilacionHolo, 0.0f);
+
+		staticShader.setVec3("pointLight[1].position", posLuzHolo); // La luz se mueve con el holograma
+		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.15f, 0.05f, 0.05f)); // Rojo suave
+		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(1.0f, 0.2f, 0.2f)); // Rojo brillante
+		staticShader.setVec3("pointLight[1].specular", glm::vec3(1.0f, 0.2f, 0.2f));
 		staticShader.setFloat("pointLight[1].constant", 1.0f);
 		staticShader.setFloat("pointLight[1].linear", 0.09f);
 		staticShader.setFloat("pointLight[1].quadratic", 0.032f);
@@ -548,7 +556,7 @@ int main() {
 		jarron.Draw(staticShader);
 		// ========== SEPARADOR ==========
 		//1
-		staticShader.use();  
+		staticShader.use();
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-18.5f, -0.7f, 0.5f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.09f));
 		modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -648,6 +656,9 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		aro5.Draw(staticShader);
 		//==========CENTRO FIN ===============
+		// //sala3
+		//Model holograma("resources/objects/sala3/Heart.fbx");
+		
 		// ========== COFRE ==========
 		if (cofreAbierto && anguloTapaCofre < anguloMaximoCofre) {
 			anguloTapaCofre += velocidadAperturaCofre * (deltaTime / 1000.0f);
@@ -763,6 +774,42 @@ int main() {
 		PcodoR.Draw(staticShader);
 		// ========== POSEIDON FIN==========
 
+		//========== HOLOGRAMA CORAZÓN (SALA 3) ===============
+		/* {
+			// 1. Activa el nuevo shader
+			shaderCorazon.use();
+			shaderCorazon.setMat4("projection", projectionOp);
+			shaderCorazon.setMat4("view", viewOp);
+
+			// 2. CÁLCULO DE ANIMACIÓN "KEYFRAME" (CPU)
+			float tiempoHolo = (float)SDL_GetTicks() / 1000.0f;
+			float anguloRotacion = tiempoHolo * 45.0f;
+			float alturaOscilacion = sin(tiempoHolo * 2.0f) * 0.5f;
+
+			// 3. CONSTRUIR MATRIZ DE MODELO
+			glm::mat4 modelMatrix = glm::mat4(1.0f);
+			glm::vec3 posBaseHolograma = glm::vec3(26.3213f, 3.00009f, -2.54276f);
+
+			modelMatrix = glm::translate(modelMatrix, posBaseHolograma);
+			modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, alturaOscilacion, 0.0f));
+			modelMatrix = glm::rotate(modelMatrix, glm::radians(anguloRotacion), glm::vec3(0.0f, 1.0f, 0.0f));
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.0000001f)); // Escala visible
+
+			// 4. PASAR UNIFORMS AL SHADER
+			shaderCorazon.setMat4("u_model", modelMatrix);
+			shaderCorazon.setVec3("u_cameraPos", camera.Position);
+			shaderCorazon.setVec3("u_holoColor", glm::vec3(1.0f, 0.1f, 0.1f)); // Color Rojo Corazón
+
+			// 5. DIBUJAR MANUALMENTE
+			for (unsigned int i = 0; i < holograma.meshes.size(); i++)
+			{
+				glBindVertexArray(holograma.meshes[i].VAO);
+				glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(holograma.meshes[i].indices.size()), GL_UNSIGNED_INT, 0);
+				glBindVertexArray(0);
+			}
+		}*/
+		//===========================================
+
 		// ========== AVE CON ANIMACIÓN DE VUELO CIRCULAR ==========
 		tiempoVueloAve += velocidadVueloAve * (deltaTime / 1000.0f);
 
@@ -774,7 +821,7 @@ int main() {
 		glm::vec3 posicionAve = glm::vec3(x, y, z);
 
 		float anguloRotacion = atan2(sin(anguloVuelo), cos(anguloVuelo));
-		anguloRotacion = glm::degrees(anguloRotacion) + 90.0f; 
+		anguloRotacion = glm::degrees(anguloRotacion) + 90.0f;
 		// Aleteo de las alas
 		float tiempoAleteo = tiempoVueloAve * velocidadAleteo;
 		anguloAleteo = sin(tiempoAleteo) * amplitudAleteo;
@@ -817,11 +864,85 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		silla.Draw(staticShader);
 
+		// ===== DIBUJAR FUENTE (MÉTODO POR MALLA - SOLUCIÓN MANUAL) =====
+		
+		// 1. Definimos la matriz del modelo base (Piedra/Pasto)
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, -1.0f, 30.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(1.5f));
-		staticShader.setMat4("model", modelOp);
-		fuente.Draw(staticShader);
 
+		// --- PASE 1: Dibujar OPACOS (Piedra y "Base de Piedra") ---
+		staticShader.use();
+		staticShader.setMat4("projection", projectionOp);
+		staticShader.setMat4("view", viewOp);
+		staticShader.setMat4("model", modelOp);
+
+		// Pasamos todas las luces al staticShader
+		staticShader.setVec3("viewPos", camera.Position);
+		staticShader.setVec3("dirLight.direction", glm::vec3(0.2f, -0.8f, -0.5f));
+		staticShader.setVec3("pointLight[0].position", glm::vec3(0.0f, 20.0f, -70.0f));
+		// (Asegúrate de que todas las luces que staticShader usa estén aquí)
+		staticShader.setFloat("material_shininess", 32.0f);
+
+		// 1. Obtenemos la textura de piedra de la malla 0
+		unsigned int stoneTextureID = fuente.meshes[0].textures[0].id;
+
+		// 2. Dibujamos las mallas
+		for (unsigned int i = 0; i < fuente.meshes.size(); i++)
+		{
+			if (i <= 4) // Mallas 0, 1, 2, 3, 4 (Piedra y Base)
+			{
+				if (i <= 2) // La piedra original
+				{
+					fuente.meshes[i].Draw(staticShader);
+				}
+				else // Mallas 3, 4 (Pasto y Base)
+				{
+					// Forzamos la textura de piedra en estas mallas
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, stoneTextureID);
+					// Dibujamos la malla manualmente
+					glBindVertexArray(fuente.meshes[i].VAO);
+					glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(fuente.meshes[i].indices.size()), GL_UNSIGNED_INT, 0);
+					glBindVertexArray(0);
+				}
+			}
+		}
+
+		// --- PASE 2: Dibujar TRANSPARENTES (Agua) ---
+		glDepthMask(GL_FALSE); // Desactivamos escritura de profundidad
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+		// Creamos una NUEVA matriz para el agua, 0.01f más arriba
+		glm::mat4 modelAgua = glm::translate(modelOp, glm::vec3(0.0f, 0.01f, 0.0f));
+
+		// Configuramos y usamos el shader de agua
+		shaderFuente.use();
+		shaderFuente.setMat4("projection", projectionOp);
+		shaderFuente.setMat4("view", viewOp);
+		shaderFuente.setMat4("model", modelAgua); // Usamos la matriz elevada
+
+		// Pasamos los uniforms del agua
+		float tiempoActual = (float)SDL_GetTicks() / 1000.0f;
+		shaderFuente.setFloat("u_time", tiempoActual);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texturaRuido);
+		shaderFuente.setInt("u_noiseTexture", 0);
+
+		// Dibujamos solo las mallas de agua
+		for (unsigned int i = 0; i < fuente.meshes.size(); i++)
+		{
+			if (i > 3) //Mallas de agua (5, 6, 7)
+			{
+				// Usamos Draw() porque fuente.vs/fs son compatibles
+				fuente.meshes[i].Draw(shaderFuente);
+			}
+		}
+		
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+		// ============================================
+		
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-25.0f, -0.5f, 3.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.7f));
 		staticShader.setMat4("model", modelOp);
@@ -908,7 +1029,7 @@ int main() {
 		primitiveShader.setVec3("aColor", 1.0f, 1.0f, 1.0f);
 
 		//
-		
+
 
 		glBindTexture(GL_TEXTURE_2D, floorTexture);
 		glBindVertexArray(VAO_floor);
@@ -974,6 +1095,15 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode) {
 		camera.ProcessKeyboard(LEFT, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
+
+	// === AÑADIR ESTE BLOQUE ===
+	// Tecla C: Imprimir Coordenadas de la Cámara
+	if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+		std::cout << "=== POSICION ACTUAL ===" << std::endl;
+		std::cout << "X: " << camera.Position.x << "f, Y: " << camera.Position.y << "f, Z: " << camera.Position.z << "f" << std::endl;
+		std::cout << "=======================" << std::endl;
+	}
+	// ==========================
 
 	// Cofre
 	if (key == GLFW_KEY_E && action == GLFW_PRESS)

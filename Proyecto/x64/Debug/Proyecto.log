@@ -1,34 +1,34 @@
 ﻿  20261.cpp
-C:\Users\ximen\source\repos\Proyecto\Proyecto\include\meshAnim.h(116,50): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\include\meshAnim.h(116,50): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
   (compilando archivo de origen "20261.cpp")
   
-C:\Users\ximen\source\repos\Proyecto\Proyecto\include\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\include\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
   (compilando archivo de origen "20261.cpp")
   
-C:\Users\ximen\source\repos\Proyecto\Proyecto\include\modelAnim.h(520,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\include\modelAnim.h(520,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
   (compilando archivo de origen "20261.cpp")
   
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(275,19): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(294,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(303,18): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(307,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2717' no se puede representar en la página de códigos actual (1252)
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(442,27): warning C4244: '=': conversión de 'Uint64' a 'double'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(565,29): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(567,37): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(568,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(569,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(570,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(571,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(572,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(623,46): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(628,46): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(650,32): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(737,39): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(948,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(949,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(956,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(957,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(959,39): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(959,30): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\ximen\source\repos\Proyecto\Proyecto\20261.cpp(963,28): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-  Proyecto.vcxproj -> C:\Users\ximen\source\repos\Proyecto\x64\Debug\Proyecto.exe
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(276,19): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(295,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(304,18): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(308,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2717' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(474,27): warning C4244: '=': conversión de 'Uint64' a 'double'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(603,29): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(605,37): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(606,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(607,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(608,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(609,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(610,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(664,46): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(669,46): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(691,32): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(814,39): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1160,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1161,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1168,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1169,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1171,39): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1171,30): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1175,28): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+  Proyecto.vcxproj -> C:\Users\roalf\source\repos\ProyectoTeoría\x64\Debug\Proyecto.exe
