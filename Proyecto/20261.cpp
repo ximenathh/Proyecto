@@ -104,6 +104,15 @@ float velocidadAro5 = 105.0f;
 float velocidadPulsacion = 2.0f;
 float amplitudPulsacion = 0.15f;
 //=======ESFERA Y AROS ANIMACION FIN========
+
+// Animación de cabeza de Toro
+bool upHead = false;
+float anguloHead = 0.0f;
+float velocidad = 10.0f;
+float anguloMax = 4.0f;
+
+glm::vec3 posicionBull(-1.16222f, 1.18517f,  -22.3832f);
+
 // ========== AUDIO ==========
 //1
 SDL_AudioStream* primerStream = nullptr;
@@ -415,9 +424,12 @@ int main() {
 	Model Sala2("resources/objects/Sala2/Sala2k.obj");
 	//Alien
 	Model Alien("resources/objects/Sala2/Alien3.obj");
-	//
+	//Bird
 	Model Bird("resources/objects/Sala2/Bird.obj");
+	//Bull por partes
 	Model Bull("resources/objects/Sala2/Bull.obj");
+	Model HeadBull("resources/objects/Sala2/HeadBull.obj");
+	//Otros modelos
 	Model Estatua("resources/objects/Sala2/Estatua.obj");
 	Model Thinker("resources/objects/Sala2/Thinker.obj");
 
@@ -454,9 +466,7 @@ int main() {
 	glm::mat4 modelOp = glm::mat4(1.0f);
 	glm::mat4 viewOp = glm::mat4(1.0f);
 	glm::mat4 projectionOp = glm::mat4(1.0f);
-
-
-
+	
 	// Render loop
 	while (!glfwWindowShouldClose(window)) {
 		// Per-frame time logic
@@ -510,13 +520,9 @@ int main() {
 		viewOp = camera.GetViewMatrix();
 		staticShader.setMat4("projection", projectionOp);
 		staticShader.setMat4("view", viewOp);
-
-
-
 		// ========================================
 		// DIBUJAR MODELOS
 		// ========================================
-
 		staticShader.use();
 		//estructura
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(50.0f, -1.2f, -40.0f));
@@ -711,7 +717,7 @@ int main() {
 
 		modelOp = poseidonBase;
 		staticShader.setMat4("model", modelOp);
-		poseidon.Draw(staticShader);
+		poseidon.Draw(staticShader); 
 
 		glm::vec3 pivotBrazoI = glm::vec3(1.608f, 10.917f, 0.383f);
 		glm::vec3 pivotCodoI = glm::vec3(3.883f, 10.862f, 1.168f);
@@ -968,24 +974,27 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Sala2.Draw(staticShader);
 
-		/*bool mostrarSala2 = true;
-
-		if (mostrarSala2) {
-			staticShader.use();
-			modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(11.8f, -1.0f, -5.0f));
-			modelOp = glm::scale(modelOp, glm::vec3(1.1f));
-			modelOp = glm::rotate(modelOp, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			staticShader.setMat4("model", modelOp);
-			Sala2.Draw(staticShader);
-		}*/
-
-
-
-		//Bull
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-4.5f, -1.25f, -35.0f));
-		//modelOp = glm::scale(modelOp, glm::vec3(0.2f));
+		// ========== Toro ==========
+		if (upHead && anguloHead < anguloMax) {
+			anguloHead += velocidad * (deltaTime / 1000.0f);
+			if (anguloHead > anguloMax)
+				anguloHead = anguloMax;
+		}
+		else if (!upHead && anguloHead > 0.0f) {
+			anguloHead -= velocidad * (deltaTime / 1000.0f);
+			if (anguloHead < 0.0f)
+				anguloHead = 0.0f;
+		}
 		staticShader.setMat4("model", modelOp);
 		Bull.Draw(staticShader);
+
+		
+		glm::mat4 modelHead = modelOp; 
+		modelHead = glm::translate(modelHead, glm::vec3(0.0f, 1.2f, 0.0f));
+		modelHead = glm::rotate(modelHead, glm::radians(anguloHead), glm::vec3(1.0f, 0.0f, 1.0f));
+		modelHead = glm::translate(modelHead, glm::vec3(0.0f, -1.2f, 0.0f));
+		staticShader.setMat4("model", modelHead);
+		HeadBull.Draw(staticShader);
 
 		//Bird
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-6.0f, -1.27f, -49.0f));
@@ -1004,12 +1013,7 @@ int main() {
 		//modelOp = glm::scale(modelOp, glm::vec3(0.2f));
 		staticShader.setMat4("model", modelOp);
 		Thinker.Draw(staticShader);
-
-		////Alien
-		//modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-6.5f, -1.0f, -3.5f));
-		//staticShader.setMat4("model", modelOp);
-		//Alien.Draw(staticShader);
-
+		//Alien
 		alienShader.use();
 		alienShader.setMat4("projection", projectionOp);
 		alienShader.setMat4("view", viewOp);
@@ -1127,6 +1131,17 @@ void my_input(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 		estadoAnimacion = (estadoAnimacion == 0) ? 1 : 0;
 		tiempoAnimacion = 0.0f;
+	}
+
+	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+		upHead = !upHead;
+	// ========== CÁMARAS POSICIONES ==========
+	// Tecla 4: Ir al Toro
+	if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+		camera.Position = posicionBull;
+		camera.Yaw = 50.0f;
+		camera.Pitch = -30.0f;
+		camera.updateCameraVectors();
 	}
 
 	// ========== CÁMARAS POSICIONES ==========
