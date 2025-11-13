@@ -1,35 +1,38 @@
 ﻿  20261.cpp
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\include\meshAnim.h(116,50): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\include\meshAnim.h(116,50): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
   (compilando archivo de origen "20261.cpp")
   
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\include\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\include\modelAnim.h(104,44): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
   (compilando archivo de origen "20261.cpp")
   
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\include\modelAnim.h(520,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\include\modelAnim.h(520,24): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
   (compilando archivo de origen "20261.cpp")
   
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(276,19): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(295,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(304,18): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(308,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2717' no se puede representar en la página de códigos actual (1252)
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(476,27): warning C4244: '=': conversión de 'Uint64' a 'double'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(605,29): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(607,37): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(608,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(609,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(610,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(611,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(612,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(666,46): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(671,46): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(693,32): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(816,39): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1187,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1188,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1195,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1196,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1198,39): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1198,30): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\Proyecto\20261.cpp(1202,28): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(285,19): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(304,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(313,18): warning C4566: el carácter representado por el nombre de carácter universal '\u2713' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(317,17): warning C4566: el carácter representado por el nombre de carácter universal '\u2717' no se puede representar en la página de códigos actual (1252)
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(476,27): warning C4244: '=': conversión de 'Uint64' a 'double'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(604,29): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(606,37): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(607,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(608,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(609,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(610,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(611,33): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(665,46): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(670,46): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(692,32): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(833,39): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1008,28): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1013,28): warning C4244: '-=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1218,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1219,11): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1226,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1227,10): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1229,39): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1229,30): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\roalf\source\repos\ProyectoTeoría\Proyecto\20261.cpp(1233,28): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-  Proyecto.vcxproj -> C:\Users\kike\Documents\8vo Semestre\CompuGrafica\ProjectoFinal\x64\Debug\Proyecto.exe
+glad.obj : warning LNK4020: un registro de tipo de 'c:\users\roalf\source\repos\proyectoteoría\proyecto\x64\debug\vc143.pdb' está dañado; puede que algunos símbolos y tipos no sean accesibles desde el depurador
+  Proyecto.vcxproj -> C:\Users\roalf\source\repos\ProyectoTeoría\x64\Debug\Proyecto.exe

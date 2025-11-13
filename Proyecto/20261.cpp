@@ -111,7 +111,7 @@ float anguloHead = 0.0f;
 float velocidad = 10.0f;
 float anguloMax = 4.0f;
 
-glm::vec3 posicionBull(-1.16222f, 1.18517f,  -22.3832f);
+glm::vec3 posicionBull(-1.16222f, 1.18517f, -22.3832f);
 
 // ========== AUDIO ==========
 //1
@@ -363,6 +363,7 @@ int main() {
 	Shader shaderFuente("shaders/fuente.vs", "shaders/fuente.fs");
 	Shader shaderCorazon("shaders/heart.vs", "shaders/heart.fs");
 	Shader alienShader("shaders/alien.vs", "shaders/alien.fs");
+	Shader shaderHolograma("shaders/holograma.vs", "shaders/holograma.fs");
 
 
 	// Skybox
@@ -433,6 +434,8 @@ int main() {
 	Model Estatua("resources/objects/Sala2/Estatua.obj");
 	Model Thinker("resources/objects/Sala2/Thinker.obj");
 
+	Model holograma("resources/Objects/sala3/holograma.obj");
+
 
 
 	// Debug: Ver qué texturas se cargaron
@@ -466,7 +469,7 @@ int main() {
 	glm::mat4 modelOp = glm::mat4(1.0f);
 	glm::mat4 viewOp = glm::mat4(1.0f);
 	glm::mat4 projectionOp = glm::mat4(1.0f);
-	
+
 	// Render loop
 	while (!glfwWindowShouldClose(window)) {
 		// Per-frame time logic
@@ -499,18 +502,21 @@ int main() {
 		staticShader.setFloat("pointLight[0].linear", 0.007f);
 		staticShader.setFloat("pointLight[0].quadratic", 0.0002f);
 
-		// Luz puntual 1 (¡ACTIVADA! - Luz del Holograma)
+		// ==================================================================
+		// ===      CAMBIO DE COLOR: Luz AZUL OSCURO para el Holograma    ===
+		// ==================================================================
 		glm::vec3 posBaseHolograma = glm::vec3(26.3213f, 3.00009f, -2.54276f); // Coordenadas Sala 3
-		float alturaOscilacionHolo = sin((float)SDL_GetTicks() / 1000.0f * 2.0f) * 0.5f;
+		float alturaOscilacionHolo = sin((float)SDL_GetTicks() / 1000.0f * 1.5f) * 0.25f; // Sincronizado con la anim
 		glm::vec3 posLuzHolo = posBaseHolograma + glm::vec3(0.0f, alturaOscilacionHolo, 0.0f);
 
 		staticShader.setVec3("pointLight[1].position", posLuzHolo); // La luz se mueve con el holograma
-		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.15f, 0.05f, 0.05f)); // Rojo suave
-		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(1.0f, 0.2f, 0.2f)); // Rojo brillante
-		staticShader.setVec3("pointLight[1].specular", glm::vec3(1.0f, 0.2f, 0.2f));
+		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.05f, 0.05f, 0.15f)); // Azul oscuro suave
+		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(0.1f, 0.2f, 0.8f)); // Azul oscuro brillante
+		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.1f, 0.2f, 0.8f));
 		staticShader.setFloat("pointLight[1].constant", 1.0f);
 		staticShader.setFloat("pointLight[1].linear", 0.09f);
 		staticShader.setFloat("pointLight[1].quadratic", 0.032f);
+
 
 		// Material
 		staticShader.setFloat("material_shininess", 32.0f);
@@ -653,7 +659,7 @@ int main() {
 		//==========CENTRO FIN ===============
 		// //sala3
 		//Model holograma("resources/objects/sala3/Heart.fbx");
-		
+
 		// ========== COFRE ==========
 		if (cofreAbierto && anguloTapaCofre < anguloMaximoCofre) {
 			anguloTapaCofre += velocidadAperturaCofre * (deltaTime / 1000.0f);
@@ -717,7 +723,7 @@ int main() {
 
 		modelOp = poseidonBase;
 		staticShader.setMat4("model", modelOp);
-		poseidon.Draw(staticShader); 
+		poseidon.Draw(staticShader);
 
 		glm::vec3 pivotBrazoI = glm::vec3(1.608f, 10.917f, 0.383f);
 		glm::vec3 pivotCodoI = glm::vec3(3.883f, 10.862f, 1.168f);
@@ -769,31 +775,41 @@ int main() {
 		PcodoR.Draw(staticShader);
 		// ========== POSEIDON FIN==========
 
-		//========== HOLOGRAMA CORAZÓN (SALA 3) ===============
-		/* {
+		// ==================================================================
+		// ===          Bloque de renderizado del HOLOGRAMA (AZUL)        ===
+		// ==================================================================
+		{
+			// 0. Configurar estado de renderizado para transparencia (Blending Aditivo)
+			glDepthMask(GL_FALSE);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
 			// 1. Activa el nuevo shader
-			shaderCorazon.use();
-			shaderCorazon.setMat4("projection", projectionOp);
-			shaderCorazon.setMat4("view", viewOp);
+			shaderHolograma.use();
+			shaderHolograma.setMat4("u_projection", projectionOp);
+			shaderHolograma.setMat4("u_view", viewOp);
 
 			// 2. CÁLCULO DE ANIMACIÓN "KEYFRAME" (CPU)
 			float tiempoHolo = (float)SDL_GetTicks() / 1000.0f;
-			float anguloRotacion = tiempoHolo * 45.0f;
-			float alturaOscilacion = sin(tiempoHolo * 2.0f) * 0.5f;
+			float anguloRotacion = tiempoHolo * 30.0f;
+			float alturaOscilacion = sin(tiempoHolo * 1.5f) * 0.25f;
 
 			// 3. CONSTRUIR MATRIZ DE MODELO
 			glm::mat4 modelMatrix = glm::mat4(1.0f);
-			glm::vec3 posBaseHolograma = glm::vec3(26.3213f, 3.00009f, -2.54276f);
+			glm::vec3 posBaseHolograma = glm::vec3(26.3213f, 2.00009f, -2.54276f);
 
 			modelMatrix = glm::translate(modelMatrix, posBaseHolograma);
 			modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, alturaOscilacion, 0.0f));
 			modelMatrix = glm::rotate(modelMatrix, glm::radians(anguloRotacion), glm::vec3(0.0f, 1.0f, 0.0f));
-			modelMatrix = glm::scale(modelMatrix, glm::vec3(0.0000001f)); // Escala visible
+			modelMatrix = glm::scale(modelMatrix, glm::vec3(1.0f));
 
 			// 4. PASAR UNIFORMS AL SHADER
-			shaderCorazon.setMat4("u_model", modelMatrix);
-			shaderCorazon.setVec3("u_cameraPos", camera.Position);
-			shaderCorazon.setVec3("u_holoColor", glm::vec3(1.0f, 0.1f, 0.1f)); // Color Rojo Corazón
+			shaderHolograma.setMat4("u_model", modelMatrix);
+			shaderHolograma.setVec3("u_cameraPos", camera.Position);
+			// ==================================================================
+			// ===               CAMBIO DE COLOR: Azul Oscuro                 ===
+			// ==================================================================
+			shaderHolograma.setVec3("u_holoColor", glm::vec3(0.1f, 0.2f, 0.8f)); // Azul oscuro
 
 			// 5. DIBUJAR MANUALMENTE
 			for (unsigned int i = 0; i < holograma.meshes.size(); i++)
@@ -802,8 +818,16 @@ int main() {
 				glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(holograma.meshes[i].indices.size()), GL_UNSIGNED_INT, 0);
 				glBindVertexArray(0);
 			}
-		}*/
-		//===========================================
+
+			// 6. Restaurar estado de renderizado
+			glDepthMask(GL_TRUE);
+			glDisable(GL_BLEND);
+		}
+
+		// ==================================================================
+		// ===================     FIX 1 AÑADIDO     ======================
+		// ==================================================================
+		staticShader.use(); // <-- ¡RE-ACTIVAR el shader estático!
 
 		// ========== AVE CON ANIMACIÓN DE VUELO CIRCULAR ==========
 		tiempoVueloAve += velocidadVueloAve * (deltaTime / 1000.0f);
@@ -860,7 +884,7 @@ int main() {
 		silla.Draw(staticShader);
 
 		// ===== DIBUJAR FUENTE (MÉTODO POR MALLA - SOLUCIÓN MANUAL) =====
-		
+
 		// 1. Definimos la matriz del modelo base (Piedra/Pasto)
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(15.0f, -1.0f, 30.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(1.5f));
@@ -933,11 +957,16 @@ int main() {
 				fuente.meshes[i].Draw(shaderFuente);
 			}
 		}
-		
+
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
 		// ============================================
-		
+
+		// ==================================================================
+		// ===================     FIX 2 AÑADIDO     ======================
+		// ==================================================================
+		staticShader.use(); // <-- ¡RE-ACTIVAR el shader estático!
+
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-25.0f, -0.5f, 3.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.7f));
 		staticShader.setMat4("model", modelOp);
@@ -988,8 +1017,8 @@ int main() {
 		staticShader.setMat4("model", modelOp);
 		Bull.Draw(staticShader);
 
-		
-		glm::mat4 modelHead = modelOp; 
+
+		glm::mat4 modelHead = modelOp;
 		modelHead = glm::translate(modelHead, glm::vec3(0.0f, 1.2f, 0.0f));
 		modelHead = glm::rotate(modelHead, glm::radians(anguloHead), glm::vec3(1.0f, 0.0f, 1.0f));
 		modelHead = glm::translate(modelHead, glm::vec3(0.0f, -1.2f, 0.0f));
